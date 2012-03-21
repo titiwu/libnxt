@@ -87,16 +87,8 @@ nxt_read_common(nxt_t *nxt, char cmd, int len,
   NXT_ERR(nxt_send_str(nxt, buf));
   NXT_ERR(nxt_recv_buf(nxt, buf, len));
 
-  w = *((nxt_word_t*)buf);
-
-#ifdef _NXT_BIG_ENDIAN
-  /* The value returned is in little-endian byte ordering, so swap
-     bytes on a big-endian architecture. */
-  w = (((w & 0x000000FF) << 24) +
-       ((w & 0x0000FF00) << 8)  +
-       ((w & 0x00FF0000) >> 8)  +
-       ((w & 0xFF000000) >> 24));
-#endif /* _NXT_BIG_ENDIAN */
+  /* The value returned is in little-endian byte ordering */
+  w = (buf[3] << 24) | (buf[2] << 16) | (buf[1] << 8) | (buf[0] << 0);
 
   *word = w;
   return NXT_OK;

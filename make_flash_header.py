@@ -12,7 +12,7 @@ import sys
 import os
 import os.path
 import urllib2
-import sha
+import hashlib
 
 FLASH_DIR = 'flash_write'
 FLASH_BIN = 'flash.bin'
@@ -57,7 +57,7 @@ from the project website and use that.
     f.close()
 
     # Verify the SHA-1 checksum
-    checksum = sha.new(data).hexdigest()
+    checksum = hashlib.sha1(data).hexdigest()
     if checksum != DOWNLOAD_FLASH_CHECKSUM:
         print "Oops, the flash binary I downloaded has the wrong checksum!"
         print "Aborting :("
